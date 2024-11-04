@@ -7,15 +7,17 @@ import pygame
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 
-# Define min and max distances for "Base" calculation
+# Define min and max distances for "volume" calculation
 min_distance = 20
 max_distance = 150
 
 # Define threshold distance to detect if index finger is raised
 index_wrist_threshold = 150  # Adjust this value as needed
 
-# Variable to store the last "Base" value
-last_base_value = 0
+# Variable to store the last "volume" value
+last_vol_value = 100
+
+h = 0;
 
 # Initialize pygame mixer
 pygame.mixer.init()
@@ -89,22 +91,22 @@ with mp_hands.Hands(
                     # Round the percentage to the nearest whole number
                     percentage = round(percentage)
 
-                    # Update the last "Base" value
-                    last_base_value = percentage
+                    # Update the last "volume" value
+                    last_vol_value = percentage
 
                     # Draw a red line between thumb and index fingertips
                     cv2.line(image, (thumb_tip_x, thumb_tip_y), (index_finger_tip_x, index_finger_tip_y), (0, 0, 255), 2)
 
-                    # Display the current "Base" value in the top-left corner
+                    # Display the current "volume" value in the top-left corner
                     cv2.putText(image, f'Set volume: {percentage}%',
                                 (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
-                    # Adjust the volume based on the "Base" value
+                    # Adjust the volume volumed on the "volume" value
                     volume = percentage / 100.0  # Convert percentage to a value between 0 and 1
                     pygame.mixer.music.set_volume(volume)
 
-        # Display the last "Base" value in the bottom-left corner
-        cv2.putText(image, f'Current volume: {last_base_value}%',
+        # Display the last "volume" value in the bottom-left corner
+        cv2.putText(image, f'Current volume: {last_vol_value}%',
                     (10, h - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
 
         # Display the image
