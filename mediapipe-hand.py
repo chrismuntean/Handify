@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import math
+import pygame
 
 # Initialize MediaPipe Hands and Drawing modules
 mp_hands = mp.solutions.hands
@@ -12,6 +13,16 @@ max_distance = 150
 
 # Define threshold distance to detect if index finger is raised
 index_wrist_threshold = 150  # Adjust this value as needed
+
+# Variable to store the last "Base" value
+last_base_value = 0
+
+# Initialize pygame mixer
+pygame.mixer.init()
+
+# Load your audio file
+pygame.mixer.music.load('devillikeme.mp3')  # Replace with your audio file path
+pygame.mixer.music.play(-1)  # Play the audio file in a loop
 
 # Start capturing video from the webcam
 cap = cv2.VideoCapture(0)
@@ -78,12 +89,23 @@ with mp_hands.Hands(
                     # Round the percentage to the nearest whole number
                     percentage = round(percentage)
 
+                    # Update the last "Base" value
+                    last_base_value = percentage
+
                     # Draw a red line between thumb and index fingertips
                     cv2.line(image, (thumb_tip_x, thumb_tip_y), (index_finger_tip_x, index_finger_tip_y), (0, 0, 255), 2)
 
-                    # Display the percentage as "Base" in the top-left corner
+                    # Display the current "Base" value in the top-left corner
                     cv2.putText(image, f'Base: {percentage}%',
                                 (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+
+                    # Adjust the volume based on the "Base" value
+                    volume = percentage / 100.0  # Convert percentage to a value between 0 and 1
+                    pygame.mixer.music.set_volume(volume)
+
+        # Display the last "Base" value in the bottom-left corner
+        cv2.putText(image, f'Last Base: {last_base_value}%',
+                    (10, h - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
 
         # Display the image
         cv2.imshow('MediaPipe Hands', image)
@@ -93,3 +115,4 @@ with mp_hands.Hands(
 
 cap.release()
 cv2.destroyAllWindows()
+pygame.mixer.music.stop()
