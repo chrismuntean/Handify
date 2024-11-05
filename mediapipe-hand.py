@@ -19,7 +19,8 @@ pinky_wrist_threshold_high = 100  # For detecting if pinky is raised
 # Variable to store the last "volume" value
 last_vol_value = 100
 
-h = 0
+# Initialize variables to store the distances between fingers and wrist
+h = 0 # This is set to 0 initially to avoid errors when the hand is not detected
 
 # Initialize pygame mixer
 pygame.mixer.init()
