@@ -31,17 +31,17 @@ min_distance = 20
 max_distance = 100
 last_vol_value = 100
 
-# Initialize variables to store the distances between fingers and wrist
-h = 0 # This is set to 0 initially to avoid errors when the hand is not detected
+h = 0
 
-# Initialize Spotify API or any other modules if necessary
-# sp = initialize_spotify_api()
+# Global variables for Spotify client and token_info
+sp = None
+token_info = None
 
 @app.route('/')
 def index():
+    global sp
     # Check for active Spotify session
-    if session.get('token_info'):
-        sp = spotipy.Spotify(auth=session['token_info']['access_token'])
+    if sp:
         devices = sp.devices()['devices']
         if not devices:
             spotify_status = "No active Spotify device found. Please start Spotify on a device."
@@ -59,12 +59,20 @@ def login():
 
 @app.route('/callback')
 def callback():
+    global sp, token_info
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
-    session['token_info'] = token_info
+    sp = spotipy.Spotify(auth=token_info['access_token'])
     return redirect(url_for('index'))
 
+def refresh_spotify_token():
+    global sp, token_info
+    if sp_oauth.is_token_expired(token_info):
+        token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
+        sp = spotipy.Spotify(auth=token_info['access_token'])
+
 def gen_frames():
+    global sp, token_info
     cap = cv2.VideoCapture(0)
     with mp_hands.Hands(
         model_complexity=0,
@@ -155,7 +163,14 @@ def gen_frames():
                                     (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
                         # Adjust Spotify volume
-                        # sp.volume(percentage)
+                        if sp and token_info:
+                            try:
+                                refresh_spotify_token()
+                                sp.volume(percentage)
+                            except spotipy.exceptions.SpotifyException as e:
+                                print(f"Error setting volume: {e}")
+                        else:
+                            print('User is not authenticated with Spotify')
 
             # Display the last "volume" value in the bottom-left corner
             cv2.putText(image, f'Current volume: {last_vol_value}%',
