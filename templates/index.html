@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify & Gesture-Controlled Interface</title>
+</head>
+<body>
+    <h1>Gesture-Controlled Spotify Player</h1>
+
+    <!-- Display Spotify Connection Status -->
+    <p>{{ spotify_status }}</p>
+
+    <!-- Spotify Connect Button -->
+    {% if not session.get('token_info') %}
+        <a href="{{ url_for('login') }}">Connect with Spotify</a>
+    {% endif %}
+
+    <!-- Video Stream -->
+    <div>
+        <h2>Video Feed</h2>
+        <img src="{{ url_for('video_feed') }}" alt="Gesture Video Feed" width="640" height="480">
+    </div>
+</body>
+</html>
