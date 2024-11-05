@@ -8,16 +8,16 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 
 # Define min and max distances for "volume" calculation
-min_distance = 20
-max_distance = 150
+min_distance = 25
+max_distance = 100
 
-# Define threshold distance to detect if index finger is raised
-index_wrist_threshold = 150  # Adjust this value as needed
+# Define threshold distances
+index_wrist_threshold = 100  # For detecting if index finger is raised
+finger_wrist_threshold_low = 100  # For middle and ring fingers near the wrist
+pinky_wrist_threshold_high = 100  # For detecting if pinky is raised
 
 # Variable to store the last "volume" value
 last_vol_value = 100
-
-h = 0;
 
 # Initialize pygame mixer
 pygame.mixer.init()
@@ -54,41 +54,44 @@ with mp_hands.Hands(
                 mp_drawing.draw_landmarks(
                     image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
-                # Get coordinates of wrist and index fingertip
+                # Get coordinates of wrist, index fingertip, pinky, middle, and ring fingertips
                 wrist = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST]
                 index_finger_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
+                middle_finger_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
+                ring_finger_tip = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP]
+                pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
 
                 # Convert normalized coordinates to pixel values
                 h, w, _ = image.shape
-                wrist_x = int(wrist.x * w)
-                wrist_y = int(wrist.y * h)
-                index_finger_tip_x = int(index_finger_tip.x * w)
-                index_finger_tip_y = int(index_finger_tip.y * h)
+                wrist_x, wrist_y = int(wrist.x * w), int(wrist.y * h)
+                index_finger_tip_x, index_finger_tip_y = int(index_finger_tip.x * w), int(index_finger_tip.y * h)
+                middle_finger_tip_x, middle_finger_tip_y = int(middle_finger_tip.x * w), int(middle_finger_tip.y * h)
+                ring_finger_tip_x, ring_finger_tip_y = int(ring_finger_tip.x * w), int(ring_finger_tip.y * h)
+                pinky_tip_x, pinky_tip_y = int(pinky_tip.x * w), int(pinky_tip.y * h)
 
-                # Calculate Euclidean distance between wrist and index fingertip
-                index_wrist_distance = math.sqrt(
-                    (index_finger_tip_x - wrist_x) ** 2 +
-                    (index_finger_tip_y - wrist_y) ** 2
-                )
+                # Calculate Euclidean distances
+                index_wrist_distance = math.sqrt((index_finger_tip_x - wrist_x) ** 2 + (index_finger_tip_y - wrist_y) ** 2)
+                middle_wrist_distance = math.sqrt((middle_finger_tip_x - wrist_x) ** 2 + (middle_finger_tip_y - wrist_y) ** 2)
+                ring_wrist_distance = math.sqrt((ring_finger_tip_x - wrist_x) ** 2 + (ring_finger_tip_y - wrist_y) ** 2)
+                pinky_wrist_distance = math.sqrt((pinky_tip_x - wrist_x) ** 2 + (pinky_tip_y - wrist_y) ** 2)
 
-                # Check if index finger is raised
-                if index_wrist_distance > index_wrist_threshold:
-                    # Get coordinates of thumb tip
+                # Check if the gesture condition is met
+                if (
+                    index_wrist_distance > index_wrist_threshold and  # Index finger is raised
+                    pinky_wrist_distance > pinky_wrist_threshold_high and  # Pinky is raised
+                    middle_wrist_distance < finger_wrist_threshold_low and  # Middle finger is down
+                    ring_wrist_distance < finger_wrist_threshold_low  # Ring finger is down
+                ):
+                    # Calculate distance between thumb and index fingertips
                     thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
-                    thumb_tip_x = int(thumb_tip.x * w)
-                    thumb_tip_y = int(thumb_tip.y * h)
-
-                    # Calculate Euclidean distance between thumb and index fingertips
+                    thumb_tip_x, thumb_tip_y = int(thumb_tip.x * w), int(thumb_tip.y * h)
                     thumb_index_distance = math.sqrt(
-                        (index_finger_tip_x - thumb_tip_x) ** 2 +
-                        (index_finger_tip_y - thumb_tip_y) ** 2
+                        (index_finger_tip_x - thumb_tip_x) ** 2 + (index_finger_tip_y - thumb_tip_y) ** 2
                     )
 
                     # Normalize the distance to a percentage
                     normalized_value = (thumb_index_distance - min_distance) / (max_distance - min_distance)
                     percentage = max(0, min(normalized_value, 1)) * 100
-
-                    # Round the percentage to the nearest whole number
                     percentage = round(percentage)
 
                     # Update the last "volume" value
@@ -97,17 +100,15 @@ with mp_hands.Hands(
                     # Draw a red line between thumb and index fingertips
                     cv2.line(image, (thumb_tip_x, thumb_tip_y), (index_finger_tip_x, index_finger_tip_y), (0, 0, 255), 2)
 
-                    # Display the current "volume" value in the top-left corner
-                    cv2.putText(image, f'Set volume: {percentage}%',
-                                (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+                    # Display the current "volume" value
+                    cv2.putText(image, f'Set volume: {percentage}%', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
-                    # Adjust the volume volumed on the "volume" value
-                    volume = percentage / 100.0  # Convert percentage to a value between 0 and 1
+                    # Adjust the volume
+                    volume = percentage / 100.0
                     pygame.mixer.music.set_volume(volume)
 
-        # Display the last "volume" value in the bottom-left corner
-        cv2.putText(image, f'Current volume: {last_vol_value}%',
-                    (10, h - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
+        # Display the last "volume" value
+        cv2.putText(image, f'Current volume: {last_vol_value}%', (10, h - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
 
         # Display the image
         cv2.imshow('MediaPipe Hands', image)
