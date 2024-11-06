@@ -4,6 +4,7 @@ import mediapipe as mp
 import os
 import math
 import spotipy
+import time
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 
@@ -70,6 +71,29 @@ def refresh_spotify_token():
     if sp_oauth.is_token_expired(token_info):
         token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
         sp = spotipy.Spotify(auth=token_info['access_token'])
+
+def debounce(wait_time):
+    def decorator(func):
+        last_call = [0]
+
+        def debounced(*args, **kwargs):
+            current_time = time.time()
+            if current_time - last_call[0] >= wait_time:
+                last_call[0] = current_time
+                return func(*args, **kwargs)
+        return debounced
+    return decorator
+
+@debounce(wait_time=1.0)  # Adjust the wait_time as needed
+def set_spotify_volume(volume):
+    if sp and token_info:
+        try:
+            refresh_spotify_token()
+            sp.volume(volume)
+        except spotipy.exceptions.SpotifyException as e:
+            print(f"Error setting volume: {e}")
+    else:
+        print('User is not authenticated with Spotify')
 
 def gen_frames():
     global sp, token_info
@@ -164,11 +188,7 @@ def gen_frames():
 
                         # Adjust Spotify volume
                         if sp and token_info:
-                            try:
-                                refresh_spotify_token()
-                                sp.volume(percentage)
-                            except spotipy.exceptions.SpotifyException as e:
-                                print(f"Error setting volume: {e}")
+                            set_spotify_volume(percentage)
                         else:
                             print('User is not authenticated with Spotify')
 
