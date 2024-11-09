@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify & Gesture-Controlled Interface</title>
+    <title>Gesture-Controlled Spotify Player</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .video-container {
+            position: relative;
+            text-align: center;
+        }
+        .centered-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .blur {
+            filter: blur(5px);
+        }
+    </style>
 </head>
-<body>
-    <h1>Gesture-Controlled Spotify Player</h1>
+
+<body class="container">
+    <h1 class="mt-5 text-center">Gesture-Controlled Spotify Player</h1>
 
     <!-- Display Spotify Connection Status -->
     <p>{{ spotify_status }}</p>
 
-    <!-- Spotify Connect Button -->
-    {% if not session.get('token_info') %}
-        <a href="{{ url_for('login') }}">Connect with Spotify</a>
-    {% endif %}
-
     <!-- Video Stream -->
-    <div>
-        <h2>Video Feed</h2>
-        <img src="{{ url_for('video_feed') }}" alt="Gesture Video Feed" width="640" height="480">
+    <div class="mt-4 video-container">
+        <img src="{{ url_for('video_feed') }}" alt="Gesture Video Feed" class="img-fluid {% if not session.get('token_info') %}blur{% endif %}">
+        {% if not session.get('token_info') %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary centered-button">Connect with Spotify</a>
+        {% endif %}
     </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </html>
