@@ -38,18 +38,30 @@ h = 0
 sp = None
 token_info = None
 
+# session['spotify_player_opened'] = True # Assume Spotify player is opened by default to remove the "Open Spotify" button
+
 @app.route('/')
 def index():
     global sp
+
+    # Initialize session variables so they exist
+    if 'spotify_connected' not in session:
+        session['spotify_connected'] = False
+    if 'spotify_player_opened' not in session:
+        session['spotify_player_opened'] = False
+
     # Check for active Spotify session
     if sp:
         devices = sp.devices()['devices']
-        if not devices:
-            spotify_status = "No active Spotify device found. Please start Spotify on a device."
-        else:
+        if devices:
             spotify_status = "Spotify is connected and ready for playback."
+            session['spotify_player_opened'] = True
+        else:
+            spotify_status = "Spotify connected! Start Spotify on THIS device. Refresh the page after starting Spotify."
+            session['spotify_player_opened'] = False
     else:
-        spotify_status = "Please connect to Spotify to allow playback control."
+        spotify_status = "Connect to Spotify to allow playback control."
+        session['spotify_connected'] = False # Reset session variable if Spotify is not connected
 
     return render_template('index.html', spotify_status=spotify_status)
 
@@ -64,6 +76,8 @@ def callback():
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
     sp = spotipy.Spotify(auth=token_info['access_token'])
+    session['spotify_connected'] = True  # Set session variable to remove blur and button
+    session['spotify_player_opened'] = False  # Assume player isn't opened yet
     return redirect(url_for('index'))
 
 def refresh_spotify_token():

@@ -12,16 +12,19 @@
             background-color: #121212;
             color: #ffffff;
         }
+
         .video-container {
             position: relative;
             text-align: center;
         }
+
         .centered-button {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
         .blur {
             filter: blur(5px);
         }
@@ -29,18 +32,36 @@
 </head>
 
 <body class="container">
-    <h1 class="mt-5 text-center">Gesture-Controlled Spotify Player</h1>
-
-    <!-- Display Spotify Connection Status -->
-    <p>{{ spotify_status }}</p>
+    <h1 class="mt-5 text-center">Computer Vision feedback</h1>
 
     <!-- Video Stream -->
     <div class="mt-4 video-container">
-        <img src="{{ url_for('video_feed') }}" alt="Gesture Video Feed" class="img-fluid {% if not session.get('token_info') %}blur{% endif %}">
-        {% if not session.get('token_info') %}
-        <a href="{{ url_for('login') }}" class="btn btn-primary centered-button">Connect with Spotify</a>
-        {% endif %}
-    </div>
+        <img src="{{ url_for('video_feed') }}" alt="Gesture Video Feed" class="img-fluid {% if not session.get('spotify_connected') or not session.get('spotify_player_opened') %}blur{% endif %}">
+
+        <a href="{{ url_for('login') }}" 
+            class="btn btn-primary centered-button {% if session.get('spotify_connected') %}d-none{% endif %}">
+            Connect with Spotify
+        </a>
+        
+        <a href="https://spotify.com" target="_blank" 
+            class="btn btn-primary centered-button {% if session.get('spotify_connected') and not session.get('spotify_player_opened') %}d-block{% else %}d-none{% endif %}">
+            Open Spotify
+        </a>      
+
+        <!-- Display Spotify Connection Status -->
+        <br><br>
+        <p class="
+            {% if not session.get('spotify_connected') %}
+                text-danger
+            {% elif session.get('spotify_connected') and not session.get('spotify_player_opened') %}
+                text-warning
+            {% else %}
+                text-success
+            {% endif %}">
+            {{ spotify_status }}
+        </p>
+        </div>
+
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
