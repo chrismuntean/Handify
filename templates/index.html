@@ -36,17 +36,28 @@
 
     <!-- Video Stream -->
     <div class="mt-4 video-container">
-        <img src="{{ url_for('video_feed') }}" alt="Gesture Video Feed" class="img-fluid {% if not session.get('spotify_connected') or not session.get('spotify_player_opened') %}blur{% endif %}">
-
+        
+        <img src="{{ url_for('video_feed') }}" alt="Gesture Video Feed" 
+        class="img-fluid {% if not session.get('spotify_connected') or not session.get('spotify_player_opened') or not session.get('volume_control_supported') %}blur{% endif %}">
+   
+        <!-- Show the Connect button if Spotify is not connected -->
         <a href="{{ url_for('login') }}" 
             class="btn btn-primary centered-button {% if session.get('spotify_connected') %}d-none{% endif %}">
             Connect with Spotify
         </a>
         
+        <!-- Show the Open Spotify button if no active device is found -->
         <a href="https://spotify.com" target="_blank" 
             class="btn btn-primary centered-button {% if session.get('spotify_connected') and not session.get('spotify_player_opened') %}d-block{% else %}d-none{% endif %}">
             Open Spotify
-        </a>      
+        </a>
+        
+        <!-- Show the "Start Spotify on this device" button if active device doesn't support volume control -->
+        <a href="https://spotify.com" target="_blank" 
+            class="btn btn-primary centered-button {% if session.get('spotify_player_opened') and not session.get('volume_control_supported') %}d-block{% else %}d-none{% endif %}">
+            Try Spotify on this device
+        </a>
+   
 
         <!-- Display Spotify Connection Status -->
         <br><br>
@@ -54,6 +65,8 @@
             {% if not session.get('spotify_connected') %}
                 text-danger
             {% elif session.get('spotify_connected') and not session.get('spotify_player_opened') %}
+                text-warning
+            {% elif session.get('spotify_connected') and session.get('spotify_player_opened') and not session.get('volume_control_supported') %}
                 text-warning
             {% else %}
                 text-success

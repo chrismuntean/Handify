@@ -44,24 +44,51 @@ token_info = None
 def index():
     global sp
 
-    # Initialize session variables so they exist
+    # Initialize session variables
     if 'spotify_connected' not in session:
         session['spotify_connected'] = False
     if 'spotify_player_opened' not in session:
         session['spotify_player_opened'] = False
+    if 'volume_control_supported' not in session:
+        session['volume_control_supported'] = False
 
-    # Check for active Spotify session
+    spotify_status = "Connect to Spotify to allow playback control."
+
     if sp:
-        devices = sp.devices()['devices']
-        if devices:
-            spotify_status = "Spotify is connected and ready for playback."
-            session['spotify_player_opened'] = True
-        else:
-            spotify_status = "Spotify connected! Start Spotify on THIS device. Refresh the page after starting Spotify."
-            session['spotify_player_opened'] = False
+        try:
+            devices = sp.devices()['devices']
+            if devices:
+                active_device = next((device for device in devices if device['is_active']), None)
+                if active_device:
+                    session['spotify_player_opened'] = True
+                    try:
+                        # Test volume control by setting current volume
+                        current_volume = active_device.get('volume_percent', None)
+                        if current_volume is not None:
+                            sp.volume(current_volume, device_id=active_device['id'])
+                            session['volume_control_supported'] = True
+                            spotify_status = f"Connected to {active_device['name']}."
+                        else:
+                            session['volume_control_supported'] = False
+                            spotify_status = f"Connected to {active_device['name']}. Volume control NOT supported. Refresh once connected to a different device."
+                    except spotipy.exceptions.SpotifyException as e:
+                        session['volume_control_supported'] = False
+                        if 'VOLUME_CONTROL_DISALLOW' in str(e):
+                            spotify_status = f"Connected to {active_device['name']}. Volume control NOT supported. Refresh once connected to a different device."
+                        else:
+                            spotify_status = f"Error checking volume control: {e}"
+                else:
+                    session['spotify_player_opened'] = False
+                    spotify_status = "Spotify connected!"
+            else:
+                session['spotify_player_opened'] = False
+                spotify_status = "No devices found. Open Spotify on a device to control playback. Refresh once connected."
+        except Exception as e:
+            spotify_status = f"Error retrieving devices: {e}"
     else:
-        spotify_status = "Connect to Spotify to allow playback control."
-        session['spotify_connected'] = False # Reset session variable if Spotify is not connected
+        session['spotify_connected'] = False
+        session['spotify_player_opened'] = False
+        session['volume_control_supported'] = False
 
     return render_template('index.html', spotify_status=spotify_status)
 
