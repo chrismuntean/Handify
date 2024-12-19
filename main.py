@@ -29,7 +29,7 @@ index_wrist_threshold = 100
 finger_wrist_threshold_low = 100
 pinky_wrist_threshold_high = 100
 min_distance = 20
-max_distance = 100
+max_distance = 150
 last_vol_value = 100
 
 h = 0
