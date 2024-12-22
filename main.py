@@ -128,6 +128,8 @@ def debounce(wait_time):
         return debounced
     return decorator
 
+
+### VOLUME SETTING FUNCTION START ###
 @debounce(wait_time=1.0)  # Adjust the wait_time as needed
 def set_spotify_volume(volume):
     if sp and token_info:
@@ -138,6 +140,27 @@ def set_spotify_volume(volume):
             print(f"Error setting volume: {e}")
     else:
         print('User is not authenticated with Spotify')
+### VOLUME SETTING FUNCTION END ###
+
+### CURRENT SONG FUNCTION START ###
+@app.route('/current_song')
+def current_song():
+    global sp, token_info
+    refresh_spotify_token()  # Ensure token is valid
+    if sp:
+        playback = sp.current_playback()
+        if playback and playback['is_playing']:
+            track = playback['item']
+            return {
+                'song_name': track['name'],
+                'artist_name': ", ".join(artist['name'] for artist in track['artists']),
+                'album_image': track['album']['images'][0]['url'],
+                'duration_ms': track['duration_ms'],
+                'progress_ms': playback['progress_ms']
+            }
+        return {'error': 'No song currently playing.'}
+    return {'error': 'Spotify not connected.'}
+### CURRENT SONG FUNCTION END ###
 
 def gen_frames():
     global sp, token_info
