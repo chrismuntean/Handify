@@ -30,11 +30,12 @@ finger_wrist_threshold_low = 100
 pinky_wrist_threshold_high = 100
 min_distance = 20
 max_distance = 150
-last_vol_value = 100
+
+last_vol_value = None # set to None to avoid setting volume on startup
 
 h = 0
 
-# Global variables for Spotify client and token_info
+# Variables for Spotify client and token_info
 sp = None
 token_info = None
 
@@ -65,6 +66,8 @@ def index():
                         # Test volume control by setting current volume
                         current_volume = active_device.get('volume_percent', None)
                         if current_volume is not None:
+                            global last_vol_value 
+                            last_vol_value = current_volume
                             sp.volume(current_volume, device_id=active_device['id'])
                             session['volume_control_supported'] = True
                             spotify_status = f"Connected to {active_device['name']}."
