@@ -112,6 +112,10 @@ def callback():
 
 def refresh_spotify_token():
     global sp, token_info
+    if token_info is None:
+        print("Spotify token is missing. Redirecting to login.")
+        return redirect(url_for('login'))  # Redirect to reauthorize
+    
     if sp_oauth.is_token_expired(token_info):
         token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
         sp = spotipy.Spotify(auth=token_info['access_token'])

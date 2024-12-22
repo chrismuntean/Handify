@@ -37,7 +37,10 @@
     </style>
 </head>
 
-<body class="container">
+<body class="container"
+      data-spotify-connected="{{ 'true' if session.get('spotify_connected') else 'false' }}"
+      data-player-opened="{{ 'true' if session.get('spotify_player_opened') else 'false' }}"
+      data-volume-control-supported="{{ 'true' if session.get('volume_control_supported') else 'false' }}">
 
     <!-- Top row -->
     <div class="row">
