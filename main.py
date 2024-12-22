@@ -143,7 +143,7 @@ def set_spotify_volume(volume):
 ### VOLUME SETTING FUNCTION END ###
 
 ### CURRENT SONG FUNCTION START ###
-@app.route('/current_song')
+@app.route('/current-song-request')
 def current_song():
     global sp, token_info
     refresh_spotify_token()  # Ensure token is valid

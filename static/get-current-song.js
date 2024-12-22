@@ -1,5 +1,5 @@
 function fetchCurrentSong() {
-    fetch('/current_song')
+    fetch('/current-song-request')
         .then(response => response.json())
         .then(data => {
             if (!data.error) {
