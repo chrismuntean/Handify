@@ -7,7 +7,7 @@ import spotifyController
 from spotifyAuth import get_spotify_client
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.getenv('FLASK_SECRET_KEY')
 app.config['SESSION_COOKIE_SECURE'] = not app.debug  # Only enforce secure cookies in production
 app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access to cookies
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Prevent CSRF attacks by not sending cookies with cross-site requests
