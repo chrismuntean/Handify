@@ -39,25 +39,17 @@ max_distance = 150
 h = 0
 
 def get_spotify_client():
-    print("[DEBUG] get_spotify_client Session Data:", dict(session))
     if 'spotify_token_info' not in session:
-        print("[ERROR] Spotify token info not found in session.")
         return None
 
     token_info = session['spotify_token_info']
     if sp_oauth.is_token_expired(token_info):
-        print("[DEBUG] Spotify token expired, refreshing...")
         token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
         session['spotify_token_info'] = token_info  # Persist refreshed token
-        print("[SUCCESS] Spotify token refreshed and updated in session.")
     return spotipy.Spotify(auth=token_info['access_token'])
 
-# session['spotify_player_opened'] = True # Assume Spotify player is opened by default to remove the "Open Spotify" button
-
-@app.before_request
 @app.before_request
 def initialize_session():
-    print(f"[DEBUG] Session data before request to {request.endpoint}: {dict(session)}")
     if 'last_vol_value' not in session:
         session['last_vol_value'] = None
     if 'spotify_connected' not in session:
@@ -129,9 +121,7 @@ def callback():
     session['spotify_connected'] = True
     session['spotify_player_opened'] = False
     session.modified = True  # Signal Flask to save the session
-    print("[SUCCESS] Session updated with Spotify token.")
     return redirect(url_for('index'))
-
 
 def refresh_spotify_token():
     if 'spotify_token_info' not in session:
@@ -158,8 +148,7 @@ def debounce(wait_time):
 def update_spotify_volume(sp, volume):
     try:
         sp.volume(volume)
-    except Exception as e:
-        print(f"Error setting Spotify volume: {e}")
+    except Exception:
         raise
 
 
@@ -179,17 +168,14 @@ def set_volume():
     sp = spotipy.Spotify(auth=spotify_token_info.get('access_token'))
     try:
         sp.volume(new_volume)
-        print(f"[SUCCESS] Volume set to {new_volume}%")
         return {'status': 'success', 'volume': new_volume}, 200
     except Exception as e:
-        print(f"[ERROR] Error setting volume: {e}")
         return {'status': 'error', 'message': str(e)}, 500
 ### VOLUME SETTING FUNCTION END ###
 
 ### CURRENT SONG FUNCTION START ###
 @app.route('/current-song-request')
 def current_song():
-    print("[DEBUG] /current-song-request Session Data:", dict(session))
     sp = get_spotify_client()
     if sp:
         playback = sp.current_playback()
@@ -206,6 +192,10 @@ def current_song():
     return {'error': 'Spotify not connected.'}
 ### CURRENT SONG FUNCTION END ###
 
+
+###
+# REMEMBER: Session data is passed explicitly to the /set_volume endpoint because the gen_frames function can't access Flask's session.
+###
 def gen_frames(session_data):
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
