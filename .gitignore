@@ -3,3 +3,4 @@
 .venv310/
 .env
 .cache
+__pycache__/
