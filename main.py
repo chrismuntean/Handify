@@ -260,8 +260,6 @@ def gen_frames():
                         # Adjust Spotify volume
                         if sp and token_info:
                             set_spotify_volume(percentage)
-                        else:
-                            print('User is not authenticated with Spotify')
 
             # Display the last "volume" value in the bottom-left corner
             cv2.putText(image, f'Current volume: {last_vol_value}%',
