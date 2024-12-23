@@ -7,12 +7,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Spotify authentication setup
+app_host = os.getenv('FLASK_HOST', 'http://127.0.0.1:5000')
 sp_oauth = SpotifyOAuth(
     client_id=os.getenv('SPOTIFY_CLIENT_ID'),
     client_secret=os.getenv('SPOTIFY_CLIENT_SECRET'),
-    redirect_uri=os.getenv('SPOTIFY_REDIRECT_URI'),
+    redirect_uri=f"{app_host}/callback",
     scope="user-modify-playback-state user-read-playback-state"
 )
+
+print(f"Redirect URI being used: {sp_oauth.redirect_uri}")
 
 def refresh_spotify_token():
     if 'spotify_token_info' not in session:

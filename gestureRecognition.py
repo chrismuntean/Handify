@@ -3,6 +3,7 @@ import cv2
 import mediapipe as mp
 import math
 import requests
+import os
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
@@ -116,9 +117,10 @@ def gen_frames(session_data):
                                         (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
                             # Make internal API call
+                            app_host = os.getenv('FLASK_HOST', 'http://127.0.0.1:5000')
                             try:
                                 response = requests.post(
-                                    'http://127.0.0.1:5000/set-volume',
+                                    f'{app_host}/set-volume',
                                     json={'volume': percentage, 'session_data': session_data}  # Pass session data explicitly
                                 )
                                 if response.status_code != 200:
