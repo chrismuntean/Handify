@@ -55,8 +55,12 @@
             <!-- Video Stream -->
             <div class="mt-4 video-container">
 
-                <img src="{{ url_for('video_feed') }}" alt="Gesture Video Feed"
-                    class="img-fluid {% if not session.get('spotify_connected') or not session.get('spotify_player_opened') or not session.get('volume_control_supported') %}blur{% endif %}">
+                <!-- HIDDEN Only used for browser permissions and then streamed to backend -->
+                <input type="hidden" id="user-id" value="{{ user_id }}">
+                <video class="d-none" id="videoPreview" autoplay playsinline></video>
+
+                <img src="{{ url_for('video_feed', user_id=session.get('user_id')) }}" alt="Gesture Video Feed"
+                    class="img-fluid {% if not session.get('spotify_connected') or not session.get('spotify_player_opened') or not session.get('volume_control_supported') %}blur{% endif %}">           
 
                 <!-- Show the Connect button if Spotify is not connected -->
                 <a href="{{ url_for('login') }}"
@@ -224,4 +228,5 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ url_for('static', filename='get-current-song.js') }}"></script>
+<script src="{{ url_for('static', filename='cam-stream.js') }}"></script>
 </html>

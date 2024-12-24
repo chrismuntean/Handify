@@ -1,9 +1,12 @@
-from flask import Response, session
+from flask import Response, session, request
 import cv2
 import mediapipe as mp
 import math
 import requests
 import os
+from collections import defaultdict
+import threading
+import numpy as np
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
@@ -18,13 +21,15 @@ max_distance = 150
 
 h = 0
 
+# Global dictionary to store user-specific frame data
+user_frame_store = defaultdict(lambda: {"frame": None, "lock": threading.Lock()})
+
 ###
 # REMEMBER: Session data is passed explicitly to the /set-volume endpoint because the gen_frames function can't access Flask's session.
 ###
-def gen_frames(session_data):
-    cap = cv2.VideoCapture(0)
-    if not cap.isOpened():
-        print("Error: Could not open webcam.")
+def gen_frames(user_id, session_data):
+    if user_id not in user_frame_store:
+        print(f"[ERROR] No frame data available for user {user_id}.")
         return
 
     with mp_hands.Hands(
@@ -33,9 +38,14 @@ def gen_frames(session_data):
         min_tracking_confidence=0.5) as hands:
         try:
             while True:
-                success, frame = cap.read()
-                if not success:
-                    break
+                # Get the latest frame for the user
+                with user_frame_store[user_id]["lock"]:
+                    frame = user_frame_store[user_id]["frame"]
+
+                if frame is None:
+                    # No frame available, wait briefly
+                    time.sleep(0.1)
+                    continue
 
                 # Convert the BGR image to RGB
                 image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -145,18 +155,36 @@ def gen_frames(session_data):
                 # Yield the frame in byte format
                 yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        finally:
-            cap.release()
+        except Exception as e:
+            print(f"[ERROR] Exception in gesture recognition: {e}")
 
 def register_routes(app):
-    @app.route('/video_feed')
-    def video_feed():
-        # Collect relevant session data and pass to gen_frames
+    @app.route('/video_feed/<user_id>')
+    def video_feed(user_id):
         session_data = {
-            'spotify_token_info': session.get('spotify_token_info'),
-            'last_vol_value': session.get('last_vol_value'),
-            'spotify_connected': session.get('spotify_connected'),
-            'spotify_player_opened': session.get('spotify_player_opened'),
-            'volume_control_supported': session.get('volume_control_supported')
+            "spotify_token_info": session.get("spotify_token_info"),
+            "last_vol_value": session.get("last_vol_value"),
+            "spotify_connected": session.get("spotify_connected"),
+            "spotify_player_opened": session.get("spotify_player_opened"),
+            "volume_control_supported": session.get("volume_control_supported"),
         }
-        return Response(gen_frames(session_data), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(gen_frames(user_id, session_data), mimetype="multipart/x-mixed-replace; boundary=frame")
+        
+    @app.route('/upload_frame', methods=['POST'])
+    def upload_frame():
+        user_id = request.headers.get('User-ID')  # Extract user ID from request headers
+        if not user_id:
+            return {"error": "User ID missing"}, 400
+
+        # Decode the uploaded frame
+        nparr = np.frombuffer(request.data, np.uint8)
+        frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+        if frame is None:
+            return {"error": "Failed to decode frame"}, 400
+
+        # Store the frame for the user
+        with user_frame_store[user_id]["lock"]:
+            user_frame_store[user_id]["frame"] = frame
+
+        return {"message": "Frame received"}, 200
