@@ -9,7 +9,7 @@ function fetchCurrentSong() {
         fetch('/current-song-request')
             .then(response => {
                 if (!response.ok) {
-                    console.error('Error fetching song data:', response.statusText);
+                    console.error('[ERROR] Issue fetching song data:', response.statusText);
                     return;
                 }
                 return response.json();
