@@ -32,7 +32,7 @@ function fetchCurrentSong() {
             .catch(console.error);
     } else {
         // Spotify is not ready, skip the fetch
-        console.log('Spotify is not ready for API calls.');
+        console.log('[INFO] Spotify is not ready for API calls.');
     }
 }
 

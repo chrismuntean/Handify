@@ -28,11 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
                                         'Content-Type': 'image/jpeg',
                                         'User-ID': userId
                                     }
-                                }).catch(err => console.error("Error sending frame:", err));
+                                }).catch(err => console.error("[ERROR] Issue sending frame:", err));
                             }
                         }, 'image/jpeg');
                     } catch (err) {
-                        console.error("Error processing frame:", err);
+                        console.error("[ERROR] Issue processing frame:", err);
                     }
                 };
 
@@ -40,5 +40,5 @@ document.addEventListener("DOMContentLoaded", () => {
                 setInterval(sendFrame, 200); // Adjust interval (200ms = 5fps)
             };
         })
-        .catch(error => console.error("Webcam access denied:", error));
+        .catch(error => console.error("[ERROR] Webcam access denied:", error));
 });

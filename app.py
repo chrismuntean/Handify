@@ -26,13 +26,11 @@ def initialize_session():
         session['volume_control_supported'] = False
     if 'user_id' not in session:
         session['user_id'] = str(uuid4())
-        print(f"Generated new user_id: {session['user_id']}")
 
 @app.route('/')
 def index():
     if 'user_id' not in session:
         session['user_id'] = str(uuid4())
-        print(f"Generated new user_id: {session['user_id']}")
 
     sp = get_spotify_client()
 

@@ -116,7 +116,7 @@ def gen_frames(user_id, session_data):
 
                             # Update the last "volume" value
                             # session['last_vol_value'] = percentage
-                            # DOESN'T WORK IN GEN_FRAMES FUNCTION (NO SESSION)
+                            # DOESN'T WORK IN GEN_FRAMES FUNCTION (NO SESSION ACCESS)
 
                             # Draw a red line between thumb and index fingertips
                             cv2.line(image, (thumb_tip_x, thumb_tip_y),
