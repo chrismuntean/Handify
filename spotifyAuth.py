@@ -15,7 +15,7 @@ sp_oauth = SpotifyOAuth(
     scope="user-modify-playback-state user-read-playback-state"
 )
 
-print(f"[INFO] Redirect URI being used: {sp_oauth.redirect_uri}")
+print(f"[INFO] Spotify authentication redirect URI being used: {sp_oauth.redirect_uri}")
 
 def refresh_spotify_token():
     if 'spotify_token_info' not in session:
