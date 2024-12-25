@@ -3,7 +3,6 @@ import os
 import spotifyAuth
 import gestureRecognition
 import spotifyController
-from uuid import uuid4
 
 from spotifyAuth import get_spotify_client
 
@@ -24,14 +23,9 @@ def initialize_session():
         session['spotify_player_opened'] = False
     if 'volume_control_supported' not in session:
         session['volume_control_supported'] = False
-    if 'user_id' not in session:
-        session['user_id'] = str(uuid4())
 
 @app.route('/')
 def index():
-    if 'user_id' not in session:
-        session['user_id'] = str(uuid4())
-
     sp = get_spotify_client()
 
     spotify_status = "Connect to Spotify to allow playback control."
@@ -74,7 +68,6 @@ def index():
         session['volume_control_supported'] = False
 
     return render_template('index.html', 
-        user_id=session.get('user_id', None),
         spotify_status=spotify_status, 
         spotify_connected=session.get('spotify_connected', False),
         spotify_player_opened=session.get('spotify_player_opened', False),
@@ -86,4 +79,4 @@ gestureRecognition.register_routes(app)
 spotifyController.register_routes(app)
 
 if __name__ == '__main__':
-    app.run(debug=os.getenv('FLASK_DEBUG', 'false').lower() == 'true')
+    app.run(debug=True)

@@ -9,7 +9,7 @@ function fetchCurrentSong() {
         fetch('/current-song-request')
             .then(response => {
                 if (!response.ok) {
-                    console.error('[ERROR] Issue fetching song data:', response.statusText);
+                    console.error('Error fetching song data:', response.statusText);
                     return;
                 }
                 return response.json();
@@ -30,6 +30,9 @@ function fetchCurrentSong() {
                 }
             })
             .catch(console.error);
+    } else {
+        // Spotify is not ready, skip the fetch
+        console.log('Spotify is not ready for API calls.');
     }
 }
 

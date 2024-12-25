@@ -29,6 +29,7 @@ def register_routes(app):
         new_volume = data.get('volume', 0)
         session_data = data.get('session_data', {})  # Extract session data from payload
 
+        # Use the provided session data instead of relying on Flask's session
         spotify_token_info = session_data.get('spotify_token_info')
         if not spotify_token_info:
             print("[ERROR] Spotify token info missing in /set-volume.")
