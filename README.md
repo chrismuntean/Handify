@@ -15,7 +15,7 @@ Begin by cloning the repository to your local machine:
 ```bash
 git clone https://github.com/chrismuntean/Handify.git
 ```
-
+<br>
 
 ### Configure environment variables
 Format for `.env` file
@@ -27,15 +27,15 @@ FLASK_SECRET_KEY=<YOUR_GENERATED_SECRET_KEY>
 FLASK_HOST=http://0.0.0.0:8080
 FLASK_DEBUG=True
 ```
-**NOTE**
-* Sign up as a developer with Spotify to get a client ID and secret at developer.spotify.com
+**TIPS**
+* Sign up as a developer with Spotify to get a client ID and secret at [developer.spotify.com](https://developer.spotify.com)
 * Generate a secure flask secret key by running:
 ```bash
 python -c "import secrets; print(secrets token_hex(32))"
 ```
 * Flask host for running with Python virtual environment is http://127.0.0.1:5000 for Docker it is http://0.0.0.0:8080
 * `FLASK_DEBUG` also determines to use secure/ insecure cookies (use True for local development)
-
+<br>
 
 ### Python virtual environment installation
 ```bash
@@ -45,6 +45,7 @@ pip install -r requirements.txt
 python app.py
 ```
 **Note:** *Python version 3.10 or earlier is required* to run Google MediaPipe as of right now
+<br>
 
 ### Docker installation
 ![Docker Pulls](https://img.shields.io/docker/pulls/chrismuntean/handify.svg)
