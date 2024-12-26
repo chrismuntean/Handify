@@ -41,6 +41,7 @@ jobs:
           echo "PAT length: ${#PAT}"
         env:
           PAT: ${{ secrets.PAT }}
+      # TEST COMMIT FOR PAT TOKEN LOCALLY
 
       # Commit the new version
       - name: Commit Updated Version
