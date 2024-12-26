@@ -1,9 +1,6 @@
 services:
   handify:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: handify:latest
+    image: chrismuntean/handify:latest  # Pull the latest image from Docker Hub
     ports:
       - "8080:8080"  # Map Flask app port to host
     devices:

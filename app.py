@@ -6,8 +6,6 @@ import spotifyController
 
 from spotifyAuth import get_spotify_client
 
-# Test commit outside of workflow again
-
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
 app.config['SESSION_COOKIE_SECURE'] = not app.debug  # Only enforce secure cookies in production
