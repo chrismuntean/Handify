@@ -70,8 +70,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            chrismuntean/Handify:latest
-            chrismuntean/Handify:${{ env.new_version }}
+            chrismuntean/handify:latest
+            chrismuntean/handify:${{ env.new_version }}
 
       # Create GitHub Release
       - name: Create GitHub Release
