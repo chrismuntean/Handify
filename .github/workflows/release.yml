@@ -28,7 +28,11 @@ jobs:
       - name: Increment Patch Version
         id: increment
         run: |
+          VERSION=$(cat VERSION || echo "0.0.0")  # Fallback to "0.0.0" if VERSION is empty
           IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          MAJOR=${MAJOR:-0}  # Default to 0 if MAJOR is missing
+          MINOR=${MINOR:-0}  # Default to 0 if MINOR is missing
+          PATCH=${PATCH:-0}  # Default to 0 if PATCH is missing
           PATCH=$((PATCH + 1))
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
           echo "New Version: $NEW_VERSION"
