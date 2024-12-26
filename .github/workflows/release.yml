@@ -37,14 +37,12 @@ jobs:
 
       # Commit the new version
       - name: Commit Updated Version
-        env:
-          PAT: ${{ secrets.PAT }}
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add VERSION
           git commit -m "Bump version to ${{ env.new_version }}"
-          git push https://${PAT}@github.com/chrismuntean/Handify.git HEAD:main
+          git push origin HEAD:main
 
       # Log in to Docker Hub
       - name: Log in to Docker Hub
