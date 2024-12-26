@@ -68,5 +68,3 @@ docker compose up
 
 ## Acknowledgments
 <br>
-
-## Development Reference Guide?
