@@ -35,6 +35,13 @@ jobs:
           echo "$NEW_VERSION" > VERSION
           echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
 
+      # Debug the Personal Access Token temporarily
+      - name: Debug PAT
+        run: |
+          echo "PAT length: ${#PAT}"
+        env:
+          PAT: ${{ secrets.PAT }}
+
       # Commit the new version
       - name: Commit Updated Version
         run: |
