@@ -45,7 +45,7 @@ pip install -r requirements.txt
 python app.py
 ```
 **Note:** *Python version 3.10 or earlier is required* to run Google MediaPipe as of right now
-<br>
+<br><br>
 
 ### Docker installation
 ![Docker Pulls](https://img.shields.io/docker/pulls/chrismuntean/handify.svg)
