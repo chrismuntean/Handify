@@ -18,6 +18,3 @@ EXPOSE 8080
 
 # Command to run the app using Gunicorn
 CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "app:app"]
-
-# Run docker container and map env variable file with:
-# docker run -p 8080:8080 --env-file .env handify
