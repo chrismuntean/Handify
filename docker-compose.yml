@@ -1,0 +1,12 @@
+services:
+  handify:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: handify:latest
+    ports:
+      - "8080:8080"  # Map Flask app port to host
+    devices:
+      - "/dev/video0:/dev/video0"  # Allow access to the webcam
+    env_file:
+      - .env  # Pass the .env file
