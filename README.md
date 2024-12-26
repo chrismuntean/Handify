@@ -58,3 +58,15 @@ For more details on the Docker image, visit the [Handify Docker Hub page](https:
 docker compose up
 ```
 **Note:** Your webcam must be passed correctly under `devices` in the `docker-compose.yml` file. *This may differ on your machine.*
+<br>
+
+## Programmed Gestures
+<br>
+
+## Demonstration
+<br>
+
+## Acknowledgments
+<br>
+
+## Development Reference Guide?
