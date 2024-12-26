@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  build-and-push:
+  build-push-release:
     runs-on: ubuntu-latest
     environment: Release Authentication
 
@@ -82,3 +82,4 @@ jobs:
           body: "Automated release."
           draft: false
           prerelease: false
+          token: ${{ secrets.PAT }}
