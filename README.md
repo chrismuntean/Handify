@@ -52,7 +52,7 @@ python app.py
 
 Dockerfile and `docker-compose.yml` file are included in the repository.
 
-For more details on the Docker image, visit the [Pursuit-Alert Docker Hub page](https://hub.docker.com/r/chrismuntean/pursuit-alert).
+For more details on the Docker image, visit the [Handify Docker Hub page](https://hub.docker.com/r/chrismuntean/handify).
 
 ```bash
 docker compose up
