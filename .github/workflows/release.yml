@@ -36,14 +36,15 @@ jobs:
           echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
 
       # Commit the new version
-      # Another test commit. This is driving me nuts
       - name: Commit Updated Version
+        env:
+          PAT: ${{ secrets.PAT }}
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add VERSION
           git commit -m "Bump version to ${{ env.new_version }}"
-          git push https://${{ secrets.PAT }}@github.com/chrismuntean/Handify.git HEAD:main
+          git push https://${PAT}@github.com/chrismuntean/Handify.git HEAD:main
 
       # Log in to Docker Hub
       - name: Log in to Docker Hub
