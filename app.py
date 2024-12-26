@@ -12,8 +12,6 @@ app.config['SESSION_COOKIE_SECURE'] = not app.debug  # Only enforce secure cooki
 app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access to cookies
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Prevent CSRF attacks by not sending cookies with cross-site requests
 
-# Test updating something outside of workflow dir
-
 @app.before_request
 def initialize_session():
     if 'last_vol_value' not in session:
