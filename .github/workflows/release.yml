@@ -82,4 +82,3 @@ jobs:
           body: "Automated release."
           draft: false
           prerelease: false
-          token: ${{ secrets.PAT }}
