@@ -1,6 +1,6 @@
 <div align="center">
 
-# Handify
+# Handify | [Docker Hub](https://hub.docker.com/r/chrismuntean/handify)
 
 ### Gesture-controlled Spotify player. Built using Google MediaPipe Hand Landmarker and the Spotify Web API.
 
