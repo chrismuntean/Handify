@@ -68,3 +68,5 @@ docker compose up
 
 ## Acknowledgments
 <br>
+
+[Docker Hub Image](https://hub.docker.com/r/chrismuntean/handify/tags?page=1&name=v1.0.2)
