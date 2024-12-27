@@ -63,10 +63,10 @@ docker compose up
 ## Programmed Gestures
 <table style="width:100%; table-layout:fixed;">
   <tr>
-    <td style="width:30%; text-align:center;">
+    <td style="width:10%; text-align:center;">
       <img src="/static/pinch.png" alt="Image" style="max-width:100%; height:auto;">
     </td>
-    <td style="width:70%;">
+    <td style="width:90%;">
         <h3><b>Volume control. </b></h3>
         Adjust the volume by pinching your index and thumb after making the love sign in ASL.
     </td>
