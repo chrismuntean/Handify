@@ -61,6 +61,18 @@ docker compose up
 <br><br>
 
 ## Programmed Gestures
+<table style="width:100%; table-layout:fixed;">
+  <tr>
+    <td style="width:30%; text-align:center;">
+      <img src="/static/pinch.png" alt="Image" style="max-width:100%; height:auto;">
+    </td>
+    <td style="width:70%;">
+        <b>Volume control. </b>
+        <br>
+        Adjust the volume by pinching your index and thumb after making the love sign in ASL.
+    </td>
+  </tr>
+</table>
 <br>
 
 ## Demonstration
@@ -68,5 +80,3 @@ docker compose up
 
 ## Acknowledgments
 <br>
-
-[Docker Hub Image](https://hub.docker.com/r/chrismuntean/handify/tags?page=1&name=v1.0.2)
