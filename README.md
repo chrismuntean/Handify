@@ -67,8 +67,7 @@ docker compose up
       <img src="/static/pinch.png" alt="Image" style="max-width:100%; height:auto;">
     </td>
     <td style="width:70%;">
-        <b>Volume control. </b>
-        <br>
+        <h3><b>Volume control. </b></h3>
         Adjust the volume by pinching your index and thumb after making the love sign in ASL.
     </td>
   </tr>
