@@ -65,7 +65,7 @@ docker compose up
   
   <tr>
     <td>
-      <img src="/static/pinch.png" alt="Image" style="max-width:50%; height:auto;">
+      <img src="/static/pinch.png" alt="Love sign in American Sign Lanugage">
     </td>
     <td>
         <h3><b>Volume control. </b></h3>
