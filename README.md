@@ -27,7 +27,7 @@ FLASK_SECRET_KEY=<YOUR_GENERATED_SECRET_KEY>
 FLASK_HOST=http://0.0.0.0:8080
 FLASK_DEBUG=True
 ```
-**TIPS**
+**TIPS:**
 * Sign up as a developer with Spotify to get a client ID and secret at [developer.spotify.com](https://developer.spotify.com)
 * Generate a secure flask secret key by running: `$ python -c "import secrets; print(secrets token_hex(32))"`
 * Flask host for running with Python virtual environment is http://127.0.0.1:5000 for Docker it is http://0.0.0.0:8080
