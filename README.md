@@ -5,6 +5,7 @@
 ### Gesture-controlled Spotify player. Built using Google MediaPipe Hand Landmarker and the Spotify Web API.
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/chrismuntean/handify)
+![Docker Pulls](https://img.shields.io/docker/pulls/chrismuntean/handify.svg)
 ![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4%EF%B8%8F-blue)
 ![GitHub Release Version](https://img.shields.io/github/v/release/chrismuntean/handify)
 
@@ -45,7 +46,8 @@ python app.py
 <br><br>
 
 ### Docker installation
-![Docker Pulls](https://img.shields.io/docker/pulls/chrismuntean/handify.svg)
+![Docker Image Size](https://img.shields.io/docker/image-size/chrismuntean/handify)
+
 
 Dockerfile and `docker-compose.yml` file are included in the repository.
 
