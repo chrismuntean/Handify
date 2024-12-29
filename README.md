@@ -21,7 +21,7 @@ git clone https://github.com/chrismuntean/Handify.git
 ### Configure environment variables
 Format for `.env` file
 ```bash
-SPOTIFY_CLIENT_ID=<YOUR_SPORTIFY_CLIENT>
+SPOTIFY_CLIENT_ID=<YOUR_SPOTIFY_CLIENT>
 SPOTIFY_CLIENT_SECRET=<YOUR_SPOTIFY_SECRET>
 
 FLASK_SECRET_KEY=<YOUR_GENERATED_SECRET_KEY>
@@ -30,12 +30,12 @@ FLASK_DEBUG=True
 ```
 **TIPS:**
 * Sign up as a developer with Spotify to get a client ID and secret at [developer.spotify.com](https://developer.spotify.com)
-* Generate a secure flask secret key by running: `$ python -c "import secrets; print(secrets token_hex(32))"`
+* Generate a secure flask secret key by running: `$ python -c "import secrets; print(secrets.token_hex(32))"`
 * Flask host for running with Python virtual environment is http://127.0.0.1:5000 for Docker it is http://0.0.0.0:8080
 * `FLASK_DEBUG` also determines to use secure/ insecure cookies (use True for local development)
 <br>
 
-### Python virtual environment installation
+### Python Virtual Environment Installation
 ```bash
 python3.10 -m venv .venv310
 source .venv310/bin/activate
@@ -45,7 +45,7 @@ python handify.py
 **Note:** *Python version 3.10 or earlier is required* to run Google MediaPipe as of right now
 <br><br>
 
-### Docker installation
+### Docker Installation
 ![Docker Image Size](https://img.shields.io/docker/image-size/chrismuntean/handify)
 
 
@@ -64,7 +64,7 @@ docker compose up
   
   <tr>
     <td>
-      <img src="/static/pinch.png" alt="Love sign in American Sign Lanugage">
+      <img src="/static/pinch.png" alt="Love sign in American Sign Language">
     </td>
     <td>
         <h3><b>Volume control</b></h3>
