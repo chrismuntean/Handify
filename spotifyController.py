@@ -1,5 +1,22 @@
-from flask import request
+# Handify - Gesture-controlled Spotify player.
+# Copyright (C) 2024 Christopher Muntean
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 import spotipy
+import time
+
 from spotifyAuth import get_spotify_client
 
 def debounce(wait_time):
@@ -16,31 +33,14 @@ def debounce(wait_time):
 
 
 @debounce(wait_time=1.0)
-def update_spotify_volume(sp, volume):
+def set_spotify_volume(spotify_token_info, volume):
+    sp = spotipy.Spotify(auth=spotify_token_info.get('access_token')) # Create the Spotify client with the access token
     try:
         sp.volume(volume)
     except Exception:
         raise
 
 def register_routes(app):
-    @app.route('/set-volume', methods=['POST'])
-    def set_volume():
-        data = request.json
-        new_volume = data.get('volume', 0)
-        session_data = data.get('session_data', {})  # Extract session data from payload
-
-        spotify_token_info = session_data.get('spotify_token_info')
-        if not spotify_token_info:
-            print("[ERROR] Spotify token info missing in /set-volume.")
-            return {'status': 'error', 'message': 'Spotify client not initialized'}, 400
-
-        sp = spotipy.Spotify(auth=spotify_token_info.get('access_token'))
-        try:
-            sp.volume(new_volume)
-            return {'status': 'success', 'volume': new_volume}, 200
-        except Exception as e:
-            return {'status': 'error', 'message': str(e)}, 500
-
     @app.route('/current-song-request')
     def current_song():
         sp = get_spotify_client()
