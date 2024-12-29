@@ -80,17 +80,24 @@ docker compose up
 
 ## Acknowledgments
 ```
-@misc{google2024mediapipehandlandmarker,
-  title = {MediaPipe Hand Landmarker},
+@misc{google2024mediapipe,
+  title = {Mediapipe: Cross-platform machine learning solutions for live and streaming media},
   author = {Google AI},
   year = {2024},
-  url = {https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker}
+  url = {https://mediapipe.dev}
 }
 
-@misc{spotify2024webapi,
-  title = {Spotify Web API},
-  author = {Spotify},
+@misc{opencv2024,
+  title = {OpenCV: Open Source Computer Vision Library},
+  author = {OpenCV team},
   year = {2024},
-  url = {https://developer.spotify.com/documentation/web-api}
+  url = {https://opencv.org/}
+}
+
+@misc{spotify2024spotipy,
+  title = {Spotipy: A lightweight Python library for the Spotify Web API},
+  author = {Spotify Developers},
+  year = {2024},
+  url = {https://spotipy.readthedocs.io/}
 }
 ```
