@@ -90,7 +90,6 @@ By using, modifying, or distributing this software, you agree to the terms and c
 
 For more details, refer to the full [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
-If you have any questions about the license or your rights under it, feel free to reach out to me at [hello@chrismuntean.dev](mailto:hello@chrismuntean.dev).
 ### Contributing
 If you wish to contribute to this project, your help is welcome! Contributions can include reporting bugs, suggesting new features, improving documentation, or submitting code enhancements.
 
