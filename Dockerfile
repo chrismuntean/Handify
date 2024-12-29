@@ -23,4 +23,4 @@ COPY . .
 EXPOSE 8080
 
 # Command to run the app using Gunicorn
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "handify:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "--timeout", "300", "handify:app"]
