@@ -83,6 +83,7 @@ This project is licensed under the terms of the [GNU General Public License v3.0
 
 ### Contributing
 By contributing to this project, you agree to license your contributions under the GPL v3 license.
+
 <br>
 
 ## Acknowledgments
