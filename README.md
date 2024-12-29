@@ -79,10 +79,38 @@ docker compose up
 <br>
 
 ## License
+
 This project is licensed under the terms of the [GNU General Public License v3.0](LICENSE).
 
+By using, modifying, or distributing this software, you agree to the terms and conditions set forth in the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). In summary:
+
+- You are free to use, modify, and distribute this software, provided that any derivative works are also licensed under the GNU GPL v3.0.
+- Any distributed copies or modifications must include this license and provide access to the source code.
+- There is no warranty for this software. It is provided "as-is" without any guarantees of performance or suitability for a particular purpose.
+
+For more details, refer to the full [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
+
+If you have any questions about the license or your rights under it, feel free to reach out to me at [hello@chrismuntean.dev](mailto:hello@chrismuntean.dev).
 ### Contributing
-By contributing to this project, you agree to license your contributions under the GPL v3 license.
+If you wish to contribute to this project, your help is welcome! Contributions can include reporting bugs, suggesting new features, improving documentation, or submitting code enhancements.
+
+By contributing to this project, you agree to license your contributions under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). This ensures that the project remains open source and free for everyone to use, modify, and distribute.
+
+**To contribute:**
+1. Fork the repository to your own GitHub account.
+2. Create a new branch for your changes: `git checkout -b my-feature-branch`.
+3. Commit your changes: `git commit -m "Add some feature"`.
+4. Push to your fork: `git push origin my-feature-branch`.
+5. Open a pull request against the main branch of this repository.
+
+*Please make sure your contributions:*
+- Follow the coding style and conventions used in the project.
+- Include documentation or comments for any new features or changes.
+- Are tested (if applicable) to ensure functionality.
+
+If you’re unsure about your contribution or have any questions, feel free to reach out to me at [hello@chrismuntean.dev](mailto:hello@chrismuntean.dev).
+
+Thank you for helping make this project better!
 
 <br>
 
