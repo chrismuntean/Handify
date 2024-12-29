@@ -79,7 +79,7 @@ docker compose up
 <br>
 
 ## Acknowledgments
-```bash
+```
 @misc{google2024mediapipehandlandmarker,
   title = {MediaPipe Hand Landmarker},
   author = {Google AI},
