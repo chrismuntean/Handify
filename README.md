@@ -40,7 +40,7 @@ FLASK_DEBUG=True
 python3.10 -m venv .venv310
 source .venv310/bin/activate
 pip install -r requirements.txt
-python app.py
+python handify.py
 ```
 **Note:** *Python version 3.10 or earlier is required* to run Google MediaPipe as of right now
 <br><br>
