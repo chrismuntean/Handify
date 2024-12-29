@@ -2,8 +2,8 @@ from flask import Response, session
 import cv2
 import mediapipe as mp
 import math
-import requests
-import os
+
+from spotifyController import set_spotify_volume
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
@@ -37,8 +37,8 @@ def gen_frames(session_data):
                 if not success:
                     break
 
-                # Convert the BGR image to RGB
-                image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = cv2.flip(frame, 1) # Flip the frame horizontally
+                image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) # Convert the BGR image to RGB
                 image.flags.writeable = False
 
                 # Process the image and detect hands
@@ -116,17 +116,10 @@ def gen_frames(session_data):
                             cv2.putText(image, f'Set volume: {percentage}%',
                                         (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
-                            # Make internal API call
-                            app_host = os.getenv('FLASK_HOST', 'http://127.0.0.1:5000')
-                            try:
-                                response = requests.post(
-                                    f'{app_host}/set-volume',
-                                    json={'volume': percentage, 'session_data': session_data}  # Pass session data explicitly
-                                )
-                                if response.status_code != 200:
-                                    print(f"[ERROR] Error setting volume via API: {response.json().get('message')}")
-                            except requests.exceptions.RequestException as e:
-                                print(f"[ERROR] Error sending volume update: {e}")
+                            # Adjust Spotify volume
+                            if session_data:
+                                spotify_token_info = session_data.get('spotify_token_info')
+                                set_spotify_volume(spotify_token_info, percentage)
 
                 # Removed temporarily because it's not dynamic (value is only passed once as an argument)
                 # Session values can't be accessed in the gen_frames function
