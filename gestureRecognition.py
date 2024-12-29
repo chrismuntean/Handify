@@ -133,7 +133,7 @@ def gen_frames(session_data):
                                         (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
                             # Adjust Spotify volume
-                            if session_data:
+                            if session_data.get('spotify_connected') == True and session_data.get('spotify_player_opened') == True:
                                 spotify_token_info = session_data.get('spotify_token_info')
                                 set_spotify_volume(spotify_token_info, percentage)
 
