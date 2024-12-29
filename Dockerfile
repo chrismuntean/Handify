@@ -1,3 +1,9 @@
+# Handify - Gesture-controlled Spotify player.
+# Copyright (C) 2024 Christopher Muntean
+#
+# This file is part of Handify and is licensed under the
+# GNU General Public License v3.0. For details, see <https://www.gnu.org/licenses/>.
+
 # Use Python 3.10 slim image as the base
 FROM python:3.10-slim
 
