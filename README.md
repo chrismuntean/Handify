@@ -6,7 +6,7 @@
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/chrismuntean/handify)
 ![Docker Pulls](https://img.shields.io/docker/pulls/chrismuntean/handify.svg)
-![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4%EF%B8%8F-blue)
+![GitHub License](https://img.shields.io/github/license/chrismuntean/handify)
 ![GitHub Release Version](https://img.shields.io/github/v/release/chrismuntean/handify)
 
 </div>
@@ -67,7 +67,7 @@ docker compose up
       <img src="/static/pinch.png" alt="Love sign in American Sign Lanugage">
     </td>
     <td>
-        <h3><b>Volume control. </b></h3>
+        <h3><b>Volume control</b></h3>
         Adjust the volume by pinching your index and thumb after making the love sign in ASL.
     </td>
   </tr>
