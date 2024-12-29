@@ -79,4 +79,18 @@ docker compose up
 <br>
 
 ## Acknowledgments
-<br>
+```
+@misc{google2024mediapipehandlandmarker,
+  title = {MediaPipe Hand Landmarker},
+  author = {Google AI},
+  year = {2024},
+  url = {https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker}
+}
+
+@misc{spotify2024webapi,
+  title = {Spotify Web API},
+  author = {Spotify},
+  year = {2024},
+  url = {https://developer.spotify.com/documentation/web-api}
+}
+```
